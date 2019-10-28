@@ -118,6 +118,7 @@ function startApp() {
        State.user.value = accounts[0];
 
        makeContract('dai',window.ercABI);
+       makeContract('btc',window.ercABI);
        makeContract('factory',window.factoryABI);
        makeContract('cbtc',window.cTokenABI);
        makeContract('ceth',window.cTokenABI);
