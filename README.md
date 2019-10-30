@@ -20,3 +20,7 @@ You can leverage as many times as you are allowed based on your collateralizatio
   - The UI always shows the latest values including interest accured. Refresh to see it update! 
   - Clicking a wallet lets you manage supply, widthdrawl, repayment, and rolling 
 
+### Try It!
+  - Live on the rinkeby network 
+  - Clone the repo and open the html or run static server 
+  - IPFS: [](https://gateway.ipfs.io/ipfs/QmcysEVwu7RCyh8vNxAY3p2HC3itmnNN16cbZDREMZcXuA/)
