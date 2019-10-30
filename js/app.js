@@ -506,7 +506,8 @@ function doSupply() {
         var supplyAmt = web3.utils.toWei(supplyValue);
         theContract.methods.initialDepositDai(supplyAmt).send({
         from: State.user.value
-      })
+      }).then(function (result) {
+        UpdateHud(State.target.value)});
       break;
 
       case 1:
@@ -514,21 +515,24 @@ function doSupply() {
       theContract.methods.initialDepositETH().send({
       from: State.user.value,
       value:supplyAmt
-    })
+    }).then(function (result) {
+      UpdateHud(State.target.value)});
       break;
 
       case 2:
       var supplyAmt = web3.utils.toWei(supplyValue);
       theContract.methods.initialDepositDai(supplyAmt).send({
       from: State.user.value
-    })
+    }).then(function (result) {
+      UpdateHud(State.target.value)});
       break;
 
       case 3:
-      var supplyAmt = parseInt(supplyValue) * 1e8;
+      var supplyAmt = parseInt(supplyValue * 1e8);
       theContract.methods.initialDepositBTC(supplyAmt).send({
       from: State.user.value
-    })
+    }).then(function (result) {
+      UpdateHud(State.target.value)});
       break;
 
     }
@@ -546,7 +550,7 @@ function doWD() {
       break;
 
       case 3:
-       wdAmt = parseInt(wdValue) * 1e8;
+       wdAmt = parseInt(wdValue * 1e8);
       break;
     }
 
