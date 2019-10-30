@@ -21,7 +21,7 @@ var maxUINT = '11579208923731619542357098500868790785326998466564056403945758400
 var WC = {
  dai: {mainnet:"",rinkeby:"0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa",instance:undefined},
  btc: {mainnet:"",rinkeby:"0x577D296678535e4903D59A4C929B718e1D575e0A",instance:undefined},
- factory: {mainnet:"",rinkeby:"0x9db977322869BB501Ee9614fa4dd3a7230F9ecb2",instance:undefined},
+ factory: {mainnet:"",rinkeby:"0x644ec03506bd4d027D0c57A17aCDcC353f11Bc2f",instance:undefined},
  cdai: {mainnet:"",rinkeby:"0x6D7F0754FFeb405d23C51CE938289d4835bE3b14",instance:undefined},
  ceth: {mainnet:"",rinkeby:"0xd6801a1DfFCd0a410336Ef88DeF4320D6DF1883e",instance:undefined},
  cbtc: {mainnet:"",rinkeby:"0x0014F450B8Ae7708593F4A46F8fa6E5D50620F96",instance:undefined}
@@ -440,6 +440,7 @@ async function createContract(type) {
    var factory = WC.factory.instance;
    var methodToCall;
    var tokenToApprove;
+   var borrowTokenToApprove;
    var bigNum = web3.utils.toBN(maxUINT);
 
    switch (type) {
@@ -447,24 +448,28 @@ async function createContract(type) {
      case 0:
        methodToCall = factory.methods.createShortETHContract;
        tokenToApprove = WC.dai.instance;
+       borrowTokenToApprove = undefined;
      break;
 
      //Long Eth
      case 1:
       methodToCall = factory.methods.createLongETHContract;
       tokenToApprove = undefined;
+       borrowTokenToApprove = WC.dai.instance;
      break;
 
      //Short Btc
      case 2:
       methodToCall = factory.methods.createShortBTCContract;
       tokenToApprove = WC.dai.instance;
+      borrowTokenToApprove = WC.btc.instance;
      break;
 
      //Long Btc
      case 3:
       methodToCall = factory.methods.createLongBTCContract;
       tokenToApprove = WC.btc.instance;
+      borrowTokenToApprove = WC.dai.instance;
      break;
 
    }
@@ -480,7 +485,11 @@ async function createContract(type) {
             tokenToApprove.methods.approve(walletAddress,bigNum).send({
             from: State.user.value,
           }).then (function (result) {
-
+            if (borrowTokenToApprove == undefined)
+              return;
+              borrowTokenToApprove.methods.approve(walletAddress,bigNum).send({
+              from: State.user.value,
+            })
           });
 
         } catch (e) {
@@ -554,7 +563,7 @@ function doWD() {
       break;
     }
 
-    theContract.methods.widthdrawal(wdValue).send({
+    theContract.methods.widthdrawal(wdAmt).send({
     from: State.user.value
    }).then(function (result) {
      UpdateHud(State.target.value);
@@ -571,14 +580,14 @@ function doRepay() {
      case 0:
         repayEth = true;
      case 1:
-        wdAmt = parseInt(wdValue) * 1e8;
+        rpAmt = web3.utils.toWei(rpValue);
        break;
      case 2:
-      rpAmt = parseInt(wdValue) * 1e8;
+        rpAmt = parseInt(wdValue * 1e8);
      break;
 
      case 3:
-      wdAmt = parseInt(wdValue) * 1e8;
+        rpAmt = web3.utils.toWei(rpValue)
      break;
    }
 

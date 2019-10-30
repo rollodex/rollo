@@ -419,6 +419,7 @@ contract LongETH is ContractType {
          bool retVal = theDai.transferFrom(msg.sender,address(this),amount);
        
          if (retVal == true) {
+             theDai.approve(cDai, amount);
              require(compoundDai.repayBorrow(amount) == 0); 
          }
         
@@ -531,6 +532,7 @@ contract ShortBTC is ContractType {
          bool retVal = theBtc.transferFrom(msg.sender,address(this),amount);
        
          if (retVal == true) {
+             theBtc.approve(cBtc, amount);
              require(compoundBtc.repayBorrow(amount) == 0); 
          }
         
@@ -638,6 +640,7 @@ contract LongBTC is ContractType {
          bool retVal = theDai.transferFrom(msg.sender,address(this),amount);
        
          if (retVal == true) {
+             theDai.approve(cDai, amount);
              require(compoundDai.repayBorrow(amount) == 0); 
          }
         
